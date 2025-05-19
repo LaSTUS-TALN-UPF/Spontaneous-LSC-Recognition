@@ -1,0 +1,28 @@
+
+feeder: feeders.feeder.Feeder
+test_feeder_args:
+  data_path: $DATASET/test_$STREAM.npy
+  label_path: $DATASET/test_label.pkl
+  debug: False
+
+# model
+model: model.msg3d.Model
+model_args:
+  # num_class: 502
+  num_class: 2731
+  num_point: 61
+  num_person: 1
+  num_gcn_scales: 8
+  num_g3d_scales: 8
+  in_channels: CALCULATE_FROM_STREAM
+  graph: graph.mediapipe61.AdjMatrixGraph
+
+# test
+phase: test
+test_batch_size: 1
+save_score: True
+
+tta : [
+  [False,1],
+  [True,1],
+  ]
