@@ -11,7 +11,7 @@ This repository is based on the original code from [mvazquezgts/SWL-LSE](https:/
 
 To run the experiments, you will first need to download the dataset. You can find all the required data on the following Google Drive link:
 
-🔗 **[Download the dataset from Google Drive]([https://drive.google.com/your_dataset_link_here](https://drive.google.com/drive/folders/1W2wk0zGJPSkYZonZ3JiuHcyA2jT8O0tg?usp=drive_link))**  
+🔗 **[Download the dataset from Google Drive]((https://drive.google.com/drive/folders/1W2wk0zGJPSkYZonZ3JiuHcyA2jT8O0tg?usp=drive_link))**  
 
 
 Once downloaded, place the data in the appropriate directory (we will specify this later in the usage section).
