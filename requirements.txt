@@ -1,0 +1,7 @@
+numpy==2.2.6
+opencv-python==4.11.0.86
+mediapipe==0.10.21
+tqdm==4.67.1
+pyaml==6.02
+torch==2.7.0
+tensorboardX==2.6.22
