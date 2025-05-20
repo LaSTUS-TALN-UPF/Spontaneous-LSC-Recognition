@@ -1,1 +1,161 @@
-# Spontaneous-LSC-Recognition
+
+# Spontaneous Catalan Sign Language Recognition
+
+This repository is based on the original code from [mvazquezgts/SWL-LSE](https://github.com/mvazquezgts/SWL-LSE), which has been adapted and extended for our research purposes. The current implementation was used to carry out the experiments presented in the paper:
+
+> **Spontaneous Catalan Sign Language Recognition: Data Acquisition and Classification**
+
+---
+
+## Dataset Download
+
+To run the experiments, you will first need to download the dataset. You can find all the required data on the following Google Drive link:
+
+🔗 **[Download the dataset from Google Drive]([https://drive.google.com/your_dataset_link_here](https://drive.google.com/drive/folders/1W2wk0zGJPSkYZonZ3JiuHcyA2jT8O0tg?usp=drive_link))**  
+
+
+Once downloaded, place the data in the appropriate directory (we will specify this later in the usage section).
+
+---
+
+## Python Environment Setup
+
+This project requires **Python 3.12**. It is strongly recommended to use a virtual environment.
+
+First, create and activate your environment (e.g., using `venv` or `conda`), and then install all required dependencies:
+
+```bash
+pip install -r requirements.txt
+
+```
+
+### NVIDIA Apex 
+
+This code requires the [NVIDIA Apex library](https://github.com/NVIDIA/apex) for mixed-precision training and performance optimization. You will need to clone and install it manually, as it's not available via `pip`.
+
+Clone and install Apex by running:
+
+```bash
+git clone https://github.com/NVIDIA/apex
+
+```
+
+## MediaPipe Keypoint Extraction
+
+The first step in the pipeline consists of extracting body and hand keypoints from raw video data using **MediaPipe**. In this project, we use both **Pose** and **Hands** modules from MediaPipe to capture relevant keypoints for sign language recognition.
+
+---
+
+### Step 1: Extract MediaPipe Keypoints from Videos
+
+Run the following script to process your videos and extract MediaPipe landmarks:
+
+```bash
+python generate_mediapipe.py \
+  --folder_input_videos 'your_path_to_videos' \
+  --pose_hands \
+  --holistic_legacy \
+  --folder_output_mediapipe 'your_output_mediapipe_folder'
+```
+### Step 2: Convert MediaPipe Output to Array Format
+
+Once the keypoints are extracted, convert them into NumPy arrays for further processing:
+
+```bash
+python generate_arr_keypoints.py \
+  --holistic_legacy \
+  --folder_input_mediapipe 'your_output_mediapipe_folder' \
+  --folder_output_kps 'arr'
+```
+
+### Step 3: Generate Features from Keypoints
+
+With the array-format keypoints, you can now generate model-ready features:
+
+```bash
+python generate_features.py \
+  --folder_in_kps 'arr' \
+  --folder_out_features 'features' \
+  --type_kps 'C3_xyc' \
+  --normalize
+```
+
+### Step 4: Prepare Dataset for Training
+
+Finally, generate the dataset in the required format using the extracted features and label annotations:
+
+```bash
+python generate_dataset.py \
+  --folder_npy 'features' \
+  --folder_labels 'annot2' \
+  --folder_out 'data'
+```
+
+## Training, Fine-tuning and Testing
+
+Once your dataset is ready, you can proceed to train the recognition model using the **MSG3D** architecture. The training scripts are located in the `msg3d/` directory
+To simplify usage, the repository provides **three preconfigured shell scripts** for running:
+
+- Training from scratch
+- Fine-tuning on your own data
+- Testing with pretrained models
+
+You can find and edit these scripts in the `msg3d/` directory:
+
+- `train.sh`
+- `finetune.sh`
+- `test.sh`
+
+Each script allows you to **customize key parameters** such as dataset paths, batch size, learning rate, device, and number of classes. Just open the script with a text editor and modify the variables at the top to match your setup.
+
+### Pretrained Weights
+
+The `weights/` folder contains the **pretrained model checkpoints** used in our experiments for the paper. These weights can be used directly for testing or as a starting point for fine-tuning on new data.
+
+
+## Web Demo – Video Corpus Visualization
+
+A simple Node.js-based web demo is provided to visualize the extracted videos and their corresponding pose representations. This can be useful for exploring the dataset or showcasing specific examples.
+
+The demo is located in the `WEB/` directory.
+
+---
+
+###  1. Install Node.js Dependencies
+
+Before running the demo, you need to install the required Node.js dependencies. Make sure you have **Node.js** installed, then run:
+
+```bash
+cd WEB
+npm install express
+
+```
+### 2. Organize Video Data
+
+The folders `videos/` and `videos_pose/` inside the `WEB/` directory are initially **empty**.
+
+You must download the required demo video files from Google Drive (see the Dataset section above), and place them in the following directories:
+
+- `WEB/videos/` — contains the original sign language videos  
+- `WEB/videos_pose/` — contains pose visualizations generated by MediaPipe
+
+⚠️ Ensure that the video filenames in both folders match correctly so the demo can link them properly.
+
+---
+
+### 3. Launch the Demo
+
+Once the videos are placed correctly, you can start the web server by running:
+
+```bash
+node server.js
+```
+Then open the following address in your browser:
+
+```bash
+http://localhost:3000
+```
+This will launch the interactive web interface where you can explore the video samples and their corresponding pose data.
+
+
+
