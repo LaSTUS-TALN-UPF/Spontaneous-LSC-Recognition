@@ -29,16 +29,6 @@ pip install -r requirements.txt
 
 ```
 
-### NVIDIA Apex 
-
-This code requires the [NVIDIA Apex library](https://github.com/NVIDIA/apex) for mixed-precision training and performance optimization. You will need to clone and install it manually, as it's not available via `pip`.
-
-Clone and install Apex by running:
-
-```bash
-git clone https://github.com/NVIDIA/apex
-
-```
 
 ## MediaPipe Keypoint Extraction
 
@@ -92,6 +82,19 @@ python generate_dataset.py \
 ```
 
 ## Training, Fine-tuning and Testing
+
+For this part, in the msg3d directory, you need to install the following
+
+### NVIDIA Apex 
+
+This code requires the [NVIDIA Apex library](https://github.com/NVIDIA/apex) for mixed-precision training and performance optimization. You will need to clone and install it manually, as it's not available via `pip`.
+
+Clone and install Apex by running:
+
+```bash
+git clone https://github.com/NVIDIA/apex
+
+```
 
 Once your dataset is ready, you can proceed to train the recognition model using the **MSG3D** architecture. The training scripts are located in the `msg3d/` directory
 To simplify usage, the repository provides **three preconfigured shell scripts** for running:
