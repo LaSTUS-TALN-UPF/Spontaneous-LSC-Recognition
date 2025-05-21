@@ -2,7 +2,6 @@ numpy==1.26.4
 opencv-python==4.11.0.86
 mediapipe==0.10.21
 tqdm==4.67.1
-PyYAML==6.02
 pyaml==25.1.0
 torch==2.7.0
-tensorboardX==2.6.22
+tensorboardX==2.6.2.2
